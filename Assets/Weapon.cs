@@ -9,6 +9,8 @@ public class Weapon : MonoBehaviour
 
     public GameObject fireVFX;
     public GameObject bloodVFX;
+
+    public ParticleSystem ParticleSystem;
     
     public AudioClip shotSFX;
 //    public AudioSource audioSource;
@@ -27,15 +29,23 @@ public class Weapon : MonoBehaviour
 
     private void Shoot()
     {
-        
-        Instantiate(fireVFX,bulletSpawn.position,bulletSpawn.rotation);
+        //Instantiate(fireVFX,bulletSpawn.position,bulletSpawn.rotation);
+        ParticleSystem.Play();
         
         RaycastHit hit;
         if (Physics.Raycast(_cam.transform.position,
                 _cam.transform.forward,
                 out hit, range))
         {
-            Instantiate(bloodVFX,hit.point,bulletSpawn.rotation);
+            if (hit.collider.CompareTag("Enemy")) // проверяем, попали ли во врага
+            {
+                Instantiate(bloodVFX,hit.point,bulletSpawn.rotation);
+            }
         }
     }
+    
+    
+                    
+                
+
 }

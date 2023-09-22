@@ -2,17 +2,26 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyMind : MonoBehaviour
+public class EnemyMind : MonoBehaviour, IDamageble, IAttack
 {
-    // Start is called before the first frame update
-    void Start()
+    public int health;
+    public int damage;
+
+    
+    public void ApplyDamage(int value)
+    {
+        health -= value;
+        CheckHeath();
+    }
+
+    public void Attack()
     {
         
     }
-
-    // Update is called once per frame
-    void Update()
+    
+    private void CheckHeath()
     {
-        
+        if (health <= 0)
+            health = 0;
     }
 }
