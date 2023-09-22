@@ -1,9 +1,9 @@
 using UnityEngine;
 
-public class Weapon : MonoBehaviour
+public class Weapon : MonoBehaviour, IAttack
 {
     [Header("Attributes")]
-    [SerializeField] private float damage = 21;
+    [SerializeField] private int damage = 20;
     [SerializeField] private float fireRate = 1;
     [SerializeField] private float range;
 
@@ -21,26 +21,30 @@ public class Weapon : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Mouse0))
+        if (Input.GetMouseButtonDown(0))
         {
             Shoot();
         }
     }
-
 
     private void Shoot()
     {
         particle_System.Play();
 
         RaycastHit hit;
-        if (Physics.Raycast(_cam.transform.position,
-                _cam.transform.forward,
-                out hit, range))
+        if (Physics.Raycast(_cam.transform.position, _cam.transform.forward, out hit, range))
         {
             if (hit.collider.CompareTag("Enemy"))
             {
                 Instantiate(bloodVFX, hit.point, bulletSpawn.rotation);
+                Enemy enemy = hit.collider.gameObject.GetComponent<Enemy>();
+                Attack(enemy);
             }
         }
+    }
+
+    public void Attack(IDamageable damageable)
+    {
+        damageable.GetDamage(damage);
     }
 }

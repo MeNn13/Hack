@@ -1,16 +1,18 @@
 using UnityEngine;
 
-public class Player : MonoBehaviour
+public class Player : MonoBehaviour, IDamageable
 {
     [Header("Attributes")]
     [SerializeField] private float speed;
     [SerializeField] private float gravity = -9.81f;
     [SerializeField] private float jumpForce = 5f;
+    [SerializeField] private int health = 100;
 
     [Header("Unity Setup Reference")]
     [SerializeField] private CharacterController controller;
     [SerializeField] private Transform groundCheck;
     [SerializeField] private LayerMask groundMask;
+    [SerializeField] private GameObject gameManager;
 
     private Vector3 _velocity;
     private bool _isGrounded;
@@ -46,5 +48,16 @@ public class Player : MonoBehaviour
     {
         if (Input.GetButtonDown("Jump") && _isGrounded)
             _velocity.y = Mathf.Sqrt(jumpForce * -2f * gravity);
+    }
+
+    public void GetDamage(int value)
+    {
+        if (health > 0)
+            health -= value;
+        else
+        {
+            gameManager.GetComponent<UIManager>().Die(TypeUnit.Player);
+            Debug.Log("Die");
+        }    
     }
 }
