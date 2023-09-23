@@ -6,7 +6,7 @@ public class UIManager : MonoBehaviour
 
     public void Die(TypeUnit unit)
     {
-        if (unit == TypeUnit.Player)
+        if (unit == TypeUnit.Игрок)
             gameObject.SetActive(true);
     }
 }

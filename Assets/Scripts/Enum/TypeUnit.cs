@@ -1,5 +1,5 @@
 public enum TypeUnit
 {
-    Player,
-    Enemy
+    Игрок,
+    Дракон
 }

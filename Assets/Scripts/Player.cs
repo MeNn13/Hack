@@ -56,7 +56,7 @@ public class Player : MonoBehaviour, IDamageable
             health -= value;
         else
         {
-            gameManager.GetComponent<UIManager>().Die(TypeUnit.Player);
+            gameManager.GetComponent<UIManager>().Die(TypeUnit.Игрок);
             Debug.Log("Die");
         }    
     }
