@@ -35,13 +35,14 @@ public class Weapon : MonoBehaviour, IAttack
         particle_System.Play();
         _source.PlayOneShot(_clip);
 
-        RaycastHit hit;
-        if (Physics.Raycast(_cam.transform.position, _cam.transform.forward, out hit, range))
+        RaycastHit[] hits;
+        hits = Physics.RaycastAll(_cam.transform.position, _cam.transform.forward, range);
+        foreach (var hit in hits)
         {
             if (hit.collider.CompareTag("Enemy"))
             {
                 Instantiate(bloodVFX, hit.point, bulletSpawn.rotation);
-                Enemy enemy = hit.collider.gameObject.GetComponent<Enemy>();
+                Enemy enemy = hit.collider.gameObject.GetComponentInParent<Enemy>();
                 Attack(enemy);
             }
         }

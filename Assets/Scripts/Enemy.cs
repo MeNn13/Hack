@@ -37,13 +37,17 @@ public class Enemy : MonoBehaviour, IDamageable, IAttack
         if (_isAttack)
         {
             agent.isStopped = true;
+            Animation("Attack");
             return;
         }
         else
             agent.isStopped = false;
 
         if (other.CompareTag("Player"))
+        {
             agent.SetDestination(other.transform.position);
+            Animation("Walk");
+        }
     }
 
     public void GetDamage(int value)
@@ -51,12 +55,15 @@ public class Enemy : MonoBehaviour, IDamageable, IAttack
         if (health > value)
             health -= value;
         else
-            Destroy(gameObject);
+        {
+            EventBus.OnEnemyDie?.Invoke();
+            Destroy(gameObject, 2);
+        }
     }
 
     public void Attack(IDamageable damageable)
     {
-        _isAttack = Physics.CheckSphere(transform.position, 5f, layerMask);
+        _isAttack = Physics.CheckSphere(transform.position, 5.5f, layerMask);
 
         if (_isAttack)
         {
@@ -68,5 +75,14 @@ public class Enemy : MonoBehaviour, IDamageable, IAttack
                 currentCooldown = cooldown;
             }
         }
+    }
+
+    private void Animation(string anim)
+    {
+        animator.SetBool("Walk", false);
+        animator.SetBool("Attack", false);
+        animator.SetBool("Dead", false);
+
+        animator.SetBool($"{anim}", true);
     }
 }
