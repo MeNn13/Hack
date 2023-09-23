@@ -12,6 +12,9 @@ public class Weapon : MonoBehaviour, IAttack
     [SerializeField] private ParticleSystem particle_System;
     [SerializeField] private Transform bulletSpawn;
 
+    [SerializeField] private AudioSource _source;
+    [SerializeField] private AudioClip _clip;
+
     Camera _cam;
 
     private void Start()
@@ -30,6 +33,7 @@ public class Weapon : MonoBehaviour, IAttack
     private void Shoot()
     {
         particle_System.Play();
+        _source.PlayOneShot(_clip);
 
         RaycastHit hit;
         if (Physics.Raycast(_cam.transform.position, _cam.transform.forward, out hit, range))
