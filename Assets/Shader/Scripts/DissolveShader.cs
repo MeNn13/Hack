@@ -12,16 +12,6 @@ public class DissolveShader : MonoBehaviour
     private Material[] materials;
     private bool _isDie = false;
 
-    private void OnEnable()
-    {
-        EventBus.OnEnemyDie += Die;
-    }
-
-    private void OnDisable()
-    {
-        EventBus.OnEnemyDie -= Die;
-    }
-
     void Start()
     {
         if (skinned != null)
@@ -54,7 +44,7 @@ public class DissolveShader : MonoBehaviour
         _isDie = false;
     }
 
-    private void Die()
+    public void Die()
     {
         _isDie = true;
         particle.Play();

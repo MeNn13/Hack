@@ -16,6 +16,7 @@ public class Enemy : MonoBehaviour, IDamageable, IAttack
     Player player;
     bool _isAttack;
     float currentCooldown;
+    bool _isDie;
 
     private void Start()
     {
@@ -52,12 +53,17 @@ public class Enemy : MonoBehaviour, IDamageable, IAttack
 
     public void GetDamage(int value)
     {
+        if (_isDie)
+            return;
+
         if (health > value)
             health -= value;
         else
         {
-            EventBus.OnEnemyDie?.Invoke();
+            GetComponent<DissolveShader>().Die();
+            EventBus.OnEnemyDie?.Invoke(TypeUnit.Дракон);
             Destroy(gameObject, 2);
+            _isDie = true;
         }
     }
 
