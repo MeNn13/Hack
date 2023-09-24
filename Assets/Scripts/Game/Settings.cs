@@ -1,8 +1,11 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Settings : MonoBehaviour
 {
     [SerializeField] private AudioSource[] audios;
+    [SerializeField] private Slider sensitivitySlider;
+    [SerializeField] private Slider audioSlider;
 
     private void Start()
     {
@@ -10,6 +13,9 @@ public class Settings : MonoBehaviour
         {
             audio.volume = Data.Instance.GameInfo.MusicVolume;
         }
+
+        sensitivitySlider.value = Data.Instance.GameInfo.Sensitivity / 1000;
+        audioSlider.value = Data.Instance.GameInfo.MusicVolume;
     }
 
     private void Update()

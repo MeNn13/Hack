@@ -2833,6 +2833,8 @@ MonoBehaviour:
   audios:
   - {fileID: 1917537017}
   - {fileID: 1917537020}
+  sensitivitySlider: {fileID: 1642321655}
+  audioSlider: {fileID: 1713896524}
 --- !u!82 &1917537020
 AudioSource:
   m_ObjectHideFlags: 0

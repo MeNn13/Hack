@@ -13,6 +13,8 @@ public class Player : MonoBehaviour, IDamageable
     [SerializeField] private Transform groundCheck;
     [SerializeField] private LayerMask groundMask;
     [SerializeField] private GameObject gameManager;
+    [SerializeField] private GameObject settingsPanel;
+    [SerializeField] private MonoBehaviour[] disableObjects;
 
     private Vector3 _velocity;
     private bool _isGrounded;
@@ -20,7 +22,33 @@ public class Player : MonoBehaviour, IDamageable
 
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            settingsPanel.SetActive(true);
+
+            foreach (var obj in disableObjects)
+            {
+                obj.enabled = false;
+            }
+
+            Cursor.lockState = CursorLockMode.Confined;
+            Cursor.visible = true;
+        }
+
         Move();
+    }
+
+    public void CloseMenu()
+    {
+        settingsPanel.SetActive(false);
+
+        foreach (var obj in disableObjects)
+        {
+            obj.enabled = true;
+        }
+
+        Cursor.lockState = CursorLockMode.Confined;
+        Cursor.visible = false;
     }
 
     private void Move()
@@ -58,6 +86,6 @@ public class Player : MonoBehaviour, IDamageable
         {
             gameManager.GetComponent<UIManager>().Die(TypeUnit.Игрок);
             Debug.Log("Die");
-        }    
+        }
     }
 }
