@@ -1,23 +1,29 @@
 using System;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Dialog : MonoBehaviour
 {
-    public static Action<TypeJob> OnApplyJob;
+    public static Action<TypeJob, TypeUnit, int> OnApplyJob;
 
     [Header("Attributes")]
     [SerializeField] private float range = 10f;
 
     [Header("Unity Setup Reference")]
-    [SerializeField] private GameObject dialogButton;
+    [SerializeField] private GameObject interactButton;
     [SerializeField] private MonoBehaviour[] disableObjects;
-    [SerializeField] private Job job;
+    [SerializeField] private JobController jobController;
 
     [Header("Job")]
-    [SerializeField] private GameObject[] dialogPanel;
-    [SerializeField] private TypeJob[] jobs;
+    [SerializeField] private GameObject dialogPanel;
+    [SerializeField] private TextMeshProUGUI textDialog;
+    [SerializeField] private Image avatar;
 
     Camera _cam;
+    Job job;
+    TypeUnit unit;
+
     private byte index = 0;
 
     private void Start()
@@ -33,50 +39,72 @@ public class Dialog : MonoBehaviour
         {
             if (hit.collider.CompareTag("Resident"))
             {
-                dialogButton.SetActive(true);
+                interactButton.SetActive(true);
                 if (Input.GetKeyDown(KeyCode.F))
-                {    
-                    if (!job.Done)
-                        Enable(false, index);
-                    else
-                        Enable(false, ++index);
+                {
+                    SetDialog(hit, jobController.Done);
                 }
                 return;
             }
             else
-                dialogButton.SetActive(false);
+                interactButton.SetActive(false);
         }
     }
 
     public void ApplyTask()
     {
-        OnApplyJob?.Invoke(jobs[index]);
-        Enable(true, index);
+        OnApplyJob?.Invoke(job.JobType, job.Unit, job.Count);
+        dialogPanel.SetActive(false);
+        Reading(false);
     }
 
     public void DenyTask()
     {
-        Enable(true, index);
+        dialogPanel.SetActive(false);
+        Reading(false);
     }
 
-    private void Enable(bool value, int indexPanel)
+    public void Reading(bool value)
     {
-        foreach (var obj in disableObjects)
+        if (value)
         {
-            obj.enabled = value;
-        }
+            foreach (var obj in disableObjects)
+            {
+                obj.enabled = false;
+            }
 
-        if (!value)
-        {
             Cursor.lockState = CursorLockMode.Confined;
             Cursor.visible = true;
-            dialogPanel[indexPanel].SetActive(true);
         }
         else
         {
-            Cursor.lockState = CursorLockMode.Confined;
+            foreach (var obj in disableObjects)
+            {
+                obj.enabled = true;
+            }
+
+            Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
-            dialogPanel[indexPanel].SetActive(false);
         }
+
+    }
+
+    private void SetDialog(RaycastHit hit, bool value)
+    {
+        Replica replica = hit.collider.GetComponent<Replica>();
+        avatar.sprite = replica.Avatar;
+
+        if (replica.Jobs[replica.Index] == null)
+            return;
+
+        if (value)
+            job = hit.collider.GetComponent<Replica>().Jobs[++replica.Index];
+        else
+            job = hit.collider.GetComponent<Replica>().Jobs[replica.Index];
+
+        textDialog.text = job.Description;
+
+        dialogPanel.SetActive(true);
+        Reading(true);
     }
 }
