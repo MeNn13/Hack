@@ -11,6 +11,7 @@ public class JobController : MonoBehaviour
 
     private int _count;
     private int currentCount = 0;
+    private bool _completed = false;
     private TypeUnit enemy;
 
     private void OnEnable()
@@ -54,6 +55,7 @@ public class JobController : MonoBehaviour
             if (currentCount == _count)
             {
                 Done = true;
+                _completed = true;
                 jobText.text = "Сдайте квест";
             }
         }       

@@ -8,10 +8,11 @@ public class Dialog : MonoBehaviour
     public static Action<TypeJob, TypeUnit, int> OnApplyJob;
 
     [Header("Attributes")]
-    [SerializeField] private float range = 10f;
+    [SerializeField] private float range = 4f;
 
     [Header("Unity Setup Reference")]
     [SerializeField] private GameObject interactButton;
+    [SerializeField] private GameObject apllyButton;
     [SerializeField] private MonoBehaviour[] disableObjects;
     [SerializeField] private JobController jobController;
 
@@ -101,6 +102,11 @@ public class Dialog : MonoBehaviour
             job = hit.collider.GetComponent<Replica>().Jobs[++replica.Index];
         else
             job = hit.collider.GetComponent<Replica>().Jobs[replica.Index];
+
+        if (replica.GiveJob)
+            apllyButton.SetActive(true);
+        else
+            apllyButton.SetActive(false);
 
         textDialog.text = job.Description;
 
