@@ -7,6 +7,7 @@ public class Replica : MonoBehaviour
     public Sprite Avatar;
     public byte Index = 0;
     public List<Job> Jobs;
+    public bool GiveJob = true;
 }
 
 [Serializable]
