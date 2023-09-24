@@ -84,7 +84,7 @@ public class Player : MonoBehaviour, IDamageable
             health -= value;
         else
         {
-            gameManager.GetComponent<GameManager>().LoadSaveScene();           
+            gameManager.GetComponent<GameManager>().Restart();          
         }
     }
 }

@@ -50,7 +50,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 100
-  damage: 10
+  damage: 30
   cooldown: 1
   agent: {fileID: 5138800361576766182}
   layerMask:
