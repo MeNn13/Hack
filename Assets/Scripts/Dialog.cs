@@ -78,6 +78,5 @@ public class Dialog : MonoBehaviour
             Cursor.visible = false;
             dialogPanel[indexPanel].SetActive(false);
         }
-
     }
 }
